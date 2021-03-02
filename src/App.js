@@ -14,6 +14,7 @@ const TextValidator = (props) => {
   );
 };
 
+
 class App extends Component {
   state = {
     inputValue: '',
@@ -27,18 +28,22 @@ class App extends Component {
       inputLength: event.target.value.length,
       inputArr: event.target.value.split("")
     });
+    console.log(this.state.inputArr);
   };
 
-  // charClickHandler = (event) => {
-  //   const input = [...this.state.inputValue];
-  //   input.findIndex(char => {
-  //     char === event.
-  //   })
-  //   this.setState({
-
-  //   })
-  // }
-
+  charClickHandler = (event) => {
+    const newInput = [...this.state.inputValue];
+    const index = event.target.getAttribute("data-index");
+    newInput.splice(index, 1)
+    
+    const newValue = newInput.join("");
+    const newLength = this.state.inputLength - 1;
+    this.setState({
+      inputArr: newInput,
+      inputValue: newValue,
+      inputLength: newLength
+    })
+  }
 
 
 
@@ -49,13 +54,13 @@ class App extends Component {
         <input type="text" value={this.state.inputValue} onChange={(event) => this.inputChangeHandler(event)} />
         {this.state.inputLength > 0 ? <p>Text Length: {this.state.inputLength}</p> : null}
         <TextValidator length={this.state.inputLength} />
-        {this.state.inputArr.map(val => {
-          return <Char char={val} />
+        <h3>Click to remove</h3>
+        {this.state.inputArr.map((val, index) => {
+          return <Char val={val} index={index} click={(event) => this.charClickHandler(event)} />
         })}
       </div>
     );
   };
-
 }
 
 
